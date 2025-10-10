@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <math.h>
+#include "get_time.h"
 
 typedef struct {
     float x;
@@ -15,7 +16,10 @@ int main(int argc, char *argv[]) {
     coord *data;
     int i;
     double sum;
-    
+    double startTime, stopTime, elapsedTime;    
+
+    startTime = getTime();
+
     data = malloc(N * sizeof(coord));
     assert(data);
     
@@ -28,5 +32,12 @@ int main(int argc, char *argv[]) {
         sum += sqrt(data[i].r2);
     }
     printf("sum=%f\n", sum);
+
+    
+    stopTime = getTime();
+    elapsedTime = stopTime - startTime;
+    
+    printf("elapsed local Time: %.4g seconds\n", elapsedTime);
+
     return 0;
 }
