@@ -39,7 +39,97 @@ The omp parallelization was added right before the for loop, and the existing su
 
 If the data that each process works on is small enough, it is possible for the entire data to fit into the CPU cache(s). This provides a very significant speedup, as there aren't any "round trips" required to access the main memory, which is magnitudes slower than accessing the caches.
 
- 
+# Assignment 4
+
+
+
+# Part 1
+
+## Accessing Directories
+
+Home directory:
+drwx------ 2 kpowell uzh8 4096 Oct 16 16:49 /users/kpowell
+Scratch directory:
+drwxr-x---+ 2 kpowell uzh8 4096 Sep 24 13:22 /capstor/scratch/cscs/kpowell
+
+Accessing other students / group members directories isn't possible, as only the user has any permissions for them, unlike the scratch directory.
+
+drwx------ 2 ggomezde uzh8 4096 Oct 10 09:23 ggomezde
+
+## New Directory permissions
+
+The permissions of a new directory are: drwxr-xr-x
+So full permission for user, and read-execute permissions for group and other users.
+
+## Accessing users/meberlei
+
+The permissions for meberlei are the same as for other uzh8 users, drwx------.
+It is not possible to view or edit anything within that directory, regardless of if the path exists or not.
+
+## Full permission for user only
+
+Command used: chmod 700 dir_name
+
+## File on Scratch
+
+text_file.txt created, permissions set using chmod 770 text_file.txt
+
+## File with permissions 000
+
+A file becomes uninteractable, as no permissions exist for it.
+Although the file can't be read, written, or executed, it's permissions can still be modified to make it accessible again.
+
+
+# Part 2
+
+
+## Binary Matching regex
+
+As it isn't specified on the question sheet, these are the regex's that would match the entire binary string.
+
+```
+- end with 00
+	.*00$
+- start and end with 1
+	^1.*1$
+- contain the pattern 110
+	.*110.*
+- contain at least three times a 1
+	(.*1){3}.*
+- contain at least three consecutive 1s
+	.*1{3}.*
+
+  ```
+
+
+## Temperature Reading
+
+The average temperature was computed as 20.57.
+
+# Prime factoring
+
+## Factor command
+
+factor prints a number followed by its prime factorization.  
+factor 20 prints:
+	20: 2 2 5
+showing that it has 3 prime factors, indicating that it's a composite.
+factor 31 prints:
+	31: 31
+the fact that it only has itself as a prime factor demonstrates that it's a prime number.
+
+## Distinguishing primes
+
+by piping the output of factor into wc -w, the number of words is counted, i.e. the amount of factors printed. If the resulting number is 2, e.g. for "31: 31", then the number is a prime.
+
+## Capturing and processing outputs
+
+The factor command output is captured into a variable. On a seperate line, that value is then piped into wc and also captured into a variable, on which the final if-block is run to test whether the word count is 2 and therefore the number prime.
+
+## Performance timings
+
+4230283 is a prime and 457286217100 is a composite. Running on the eiger server, both took ~10ms to compute.
+
 
 
 
