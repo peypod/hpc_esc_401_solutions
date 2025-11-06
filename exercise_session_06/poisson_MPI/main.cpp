@@ -28,7 +28,9 @@ int main(int argc, char *argv[]){
     // // First allocate memory for each matrix
     f = allocateGrid(p.xmax - p.xmin, p.ymax - p.ymin, f);
     u_old = allocateGrid(p.xmax - p.xmin, p.ymax - p.ymin, u_old);
+    printf("Inited u old");
     u_new = allocateGrid(p.xmax - p.xmin, p.ymax - p.ymin, u_new);
+    printf("Inited u new");
     // Initialize the value of matrices
     init_variables(p, f, u_old, u_new);
 

@@ -42,9 +42,11 @@ void readParameters(const char* file_name, params *param) {
  */
 double** allocateGrid(int nx, int ny, double** M){
     M = new double *[nx];
+
     for (int i = 0; i < nx; i++){
         M[i] = new double[ny];
     }
+
     return M;
 }
 
@@ -95,20 +97,26 @@ double boundary(double x, double y, int rhs_function){
  *                   The "interior" entries of f store the source term of Poisson eq.
  */
 void init_f(params p, double **f){
-    // printf("Function init_f (init.cpp l.97): not implemented.\n");
-    double dx=1/((double)p.nx-1), dy=1/((double)p.ny-1);
-    for (int i=p.xmin;i<p.xmax;i++)
-        for (int j=p.ymin; j<p.ymax;j++)
-        {
-            if (i==0 || j==0 || i==p.nx-1 || j==p.ny - 1)
-            {
-                f[i - p.xmin][j - p.ymin] = boundary(i*dx,j*dy,p.rhs_function);    
+        double dx = 1.0 / ((double)p.nx - 1.0);
+    double dy = 1.0 / ((double)p.ny - 1.0);
+
+    int local_nx = p.xmax - p.xmin;
+    int local_ny = p.ymax - p.ymin;
+
+    for (int i = 0; i < local_nx; ++i) {
+        for (int j = 0; j < local_ny; ++j) {
+            int gi = p.xmin + i;
+            int gj = p.ymin + j;
+            double x = gi * dx;
+            double y = gj * dy;
+            if (gi == 0 || gj == 0 || gi == p.nx - 1 || gj == p.ny - 1) {
+                f[i][j] = boundary(x, y, p.rhs_function);
+            } else {
+                f[i][j] = source_term(x, y, p.rhs_function);
             }
-            else
-            {
-                f[i - p.xmin][j - p.ymin] = source_term(i*dx,j*dy,p.rhs_function);    
-            }            
+	    printf("f: %f ", f[i][j]);
         }
+    }
 }
 
 /**
@@ -120,10 +128,18 @@ void init_f(params p, double **f){
  * @param      u_new    Matrix containing the new solution
  */
 void init_variables(params p, double **f, double **u_old, double **u_new){
+    printf("initializing f");
     init_f(p, f);
-    for (int i=0; i<(p.xmax - p.xmin); i++){
-        for (int j=0; j<(p.ymax - p.ymin); j++){
-            u_old[i][j]  = f[i][j];
+    int local_nx = p.xmax - p.xmin;
+    int local_ny = p.ymax - p.ymin;
+
+    
+    //printf("lnx %d lny %d \n", local_nx, local_ny);
+
+    for (int i=0; i<(local_nx); i++){
+        for (int j=0; j<(local_ny); j++){
+            //printf("%d %d \n", i, j);
+	    u_old[i][j]  = f[i][j];
             u_new[i][j]  = f[i][j];
         }
     }
