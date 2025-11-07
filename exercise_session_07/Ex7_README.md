@@ -1,18 +1,30 @@
 
 # Exercise 1
 
-a. int * (int pointer)
-b. int
-c. int (*)[10] (pointer to an array of 10 ints)  
-d. 10
-e. 10
-f. 40
-g. 60
-h. 15
-i. Writes memory to before the start of the array; undefined behaviour
-j. element before p[0]; undefined behaviour
-k. 100
-l. Memory after the end of the array; undefined behaviour
+## a. 
+int * (int pointer)
+## b. 
+int
+## c. 
+int (*)[10] (pointer to an array of 10 ints)  
+## d. 
+10
+## e. 
+10
+## f. 
+40
+## g. 
+60
+## h. 
+15
+## i.
+Writes memory to before the start of the array; undefined behaviour
+## j.
+element before p[0]; undefined behaviour
+## k.
+100
+## l.
+Memory after the end of the array; undefined behaviour
 
 
 # Exercise 2
