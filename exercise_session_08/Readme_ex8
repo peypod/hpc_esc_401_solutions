@@ -1,0 +1,48 @@
+
+
+
+# Exercise 1
+
+Output:
+PI = 3.141592653589793 computed in 1.032 seconds
+PI = 3.141592653589793 computed in 0.001138 seconds
+PI = 3.141592653589793 computed in 0.00113 seconds
+PI = 3.141592653589793 computed in 0.001132 seconds
+PI = 3.141592653589793 computed in 0.001127 seconds
+
+As the data gets loaded to the gpu, the first iteration is by far the slowest. It is however much quicker than the serial version.
+
+# Exercise 2
+
+Output:
+PI = 3.14159265358979 computed in 0.04855 seconds
+The performance was better than the first and worse than the subsequent iterations of the openACC version.
+
+# Exercise 3
+
+Very low thread counts were very inefficient. Performance generally increased with higher thread count and block size (especially at warp multiples), however it eventually plateaud.
+Output:
+>>> Blocks: 60, Threads: 16
+PI = 3.14159265358979 computed in 0.04895 seconds
+>>> Blocks: 60, Threads: 32
+PI = 3.14159265358979 computed in 0.04896 seconds
+>>> Blocks: 60, Threads: 48
+PI = 3.14159265358979 computed in 0.04902 seconds
+>>> Blocks: 60, Threads: 64
+PI = 3.14159265358979 computed in 0.04856 seconds
+>>> Blocks: 60, Threads: 80
+PI = 3.14159265358979 computed in 0.04891 seconds
+>>> Blocks: 60, Threads: 96
+PI = 3.14159265358979 computed in 0.04892 seconds
+>>> Blocks: 60, Threads: 112
+PI = 3.14159265358979 computed in 0.04862 seconds
+>>> Blocks: 60, Threads: 128
+PI = 3.14159265358979 computed in 0.04911 seconds
+>> Blocks: 60, Threads: 144
+PI = 3.14159265358979 computed in 0.04891 seconds
+>>> Blocks: 60, Threads: 160
+PI = 3.14159265358979 computed in 0.04903 seconds
+
+>>> Blocks: 120, Threads: 16
+PI = 3.14159265358979 computed in 0.04892 seconds
+.....
