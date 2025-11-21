@@ -50,12 +50,12 @@ void blur_twice_gpu_naive(double *in , double *out , int n, int nsteps)
     double *buffer = malloc_host<double>(n);
 
     for (auto istep = 0; istep < nsteps; ++istep) {
-        // TODO: offload this loop to the GPU
-        for (auto i = 1; i < n-1; ++i) {
+        #pragma acc kernels copyin(in[0:n]) copyout(buffer[0:n])
+	for (auto i = 1; i < n-1; ++i) {
             buffer[i] = blur(i, in);
         }
 
-        // TODO: offload this loop to the GPU
+	#pragma acc kernels copyin(buffer[0:n]) copyout(out[0:n])
         for (auto i = 2; i < n-2; ++i) {
             out[i] = blur(i, buffer);
         }
@@ -70,21 +70,22 @@ void blur_twice_gpu_nocopies(double *in , double *out , int n, int nsteps)
 {
     double *buffer = malloc_host<double>(n);
 
-    // TODO: move the data needed by the algorithm to the GPU
+    #pragma acc data copyin(in[0:n]) copy(out[0:n]) create(buffer[0:n])
     {
         for (auto istep = 0; istep < nsteps; ++istep) {
-            // TODO: offload this loop to the GPU
+	    #pragma acc kernels present(in[0:n], buffer[0:n])
             for (auto i = 1; i < n-1; ++i) {
                 buffer[i] = blur(i, in);
             }
 
-            // TODO: offload this loop to the GPU
-            for (auto i = 2; i < n-2; ++i) {
+            #pragma acc kernels present(buffer[0:n], out[0:n])	    
+	    for (auto i = 2; i < n-2; ++i) {
                 out[i] = blur(i, buffer);
             }
 
-            // TODO: offload this loop to the GPU; can you try just the pointer assignment?
-            for (auto i = 0; i < n; ++i) {
+	    // pointer swap on host would not update device-resident pointers, so copying is required
+            #pragma acc kernels present(in[0:n], out[0:n])
+	    for (auto i = 0; i < n; ++i) {
                 in[i] = out[i];
             }
         }
@@ -124,6 +125,7 @@ int main(int argc, char** argv) {
 
     auto tstart = get_time();
     blur_twice_gpu_naive(x0, x1, n, nsteps);
+    //blur_twice_gpu_nocopies(x0, x1, n, nsteps);
     auto time = get_time() - tstart;
 
     auto validate = true;
