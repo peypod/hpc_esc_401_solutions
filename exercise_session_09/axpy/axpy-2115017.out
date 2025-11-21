@@ -1,0 +1,8 @@
+memcopy and daxpy test of size 4
+-------
+timings
+-------
+axpy (openmp): 0.0625686 s
+axpy (openacc): 0.853997 s
+
+============ PASSED

@@ -1,0 +1,11 @@
+#!/bin/bash -l
+#SBATCH --job-name="my-job-axpy"
+#SBATCH --time=00:05:00
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --gres=gpu:1
+#SBATCH --account=uzh8 --constraint=gpu
+#SBATCH -e axpy-%j.err
+#SBATCH -o axpy-%j.out
+
+srun -n 1 ./axpy.openacc 4
